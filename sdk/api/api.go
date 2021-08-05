@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/khanhct/go-lib-core/sdk/response"
+	"github.com/khanhct/go-lib-core/sdk/service"
 	"github.com/sirupsen/logrus"
 	"gorm.io/gorm"
 )
@@ -80,6 +81,12 @@ func getLogger(c *gin.Context) (*logrus.Logger, error) {
 	default:
 		return nil, errors.New("logger connect not exist")
 	}
+}
+
+func (e *Api) MakeService(s *service.Service) *Api {
+	s.Orm = e.Orm
+	s.Logger = e.Logger
+	return e
 }
 
 func (e Api) Error(code int, err error, msg string) {
