@@ -36,7 +36,7 @@ func Error(c *gin.Context, code int, err error, msg string) {
 	res.SetSuccess(false)
 	c.Set("result", res)
 	c.Set("status", code)
-	c.AbortWithStatusJSON(http.StatusOK, res)
+	c.AbortWithStatusJSON(code, res)
 }
 
 func OK(c *gin.Context, data interface{}, msg string) {
