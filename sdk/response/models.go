@@ -1,7 +1,7 @@
 package response
 
 type Responses interface {
-	SetCode(int32)
+	SetCode(int)
 	SetTraceID(string)
 	SetMsg(string)
 	SetData(interface{})
@@ -11,7 +11,7 @@ type Responses interface {
 
 type Response struct {
 	RequestId string `protobuf:"bytes,1,opt,name=requestId,proto3" json:"requestId,omitempty"`
-	Code      int32  `protobuf:"varint,2,opt,name=code,proto3" json:"code,omitempty"`
+	Code      int  `protobuf:"varint,2,opt,name=code,proto3" json:"code,omitempty"`
 	Msg       string `protobuf:"bytes,3,opt,name=msg,proto3" json:"msg,omitempty"`
 	Status    string `protobuf:"bytes,4,opt,name=status,proto3" json:"status,omitempty"`
 }
@@ -20,6 +20,8 @@ type response struct {
 	Response
 	Data interface{} `json:"data"`
 }
+
+type HttpResponse response
 
 type Page struct {
 	Count     int `json:"count"`
@@ -48,7 +50,7 @@ func (e *response) SetMsg(s string) {
 	e.Msg = s
 }
 
-func (e *response) SetCode(code int32) {
+func (e *response) SetCode(code int) {
 	e.Code = code
 }
 

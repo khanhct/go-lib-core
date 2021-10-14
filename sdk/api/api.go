@@ -71,11 +71,11 @@ func (e *Api) MakeLogger(f func(c *gin.Context) (*logrus.Logger, error)) *Api {
 }
 
 func getLogger(c *gin.Context) (*logrus.Logger, error) {
-	ilogger, exist := c.Get("logger")
+	iLogger, exist := c.Get("logger")
 	if !exist {
 		return nil, errors.New("logger connect not exist")
 	}
-	switch idb := ilogger.(type) {
+	switch idb := iLogger.(type) {
 	case *logrus.Logger:
 		return idb, nil
 	default:

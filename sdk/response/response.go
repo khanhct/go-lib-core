@@ -32,7 +32,7 @@ func Error(c *gin.Context, code int, err error, msg string) {
 		res.SetMsg(msg)
 	}
 	res.SetTraceID(GenerateMsgIDFromContext(c))
-	res.SetCode(int32(code))
+	res.SetCode(code)
 	res.SetSuccess(false)
 	c.Set("result", res)
 	c.Set("status", code)
