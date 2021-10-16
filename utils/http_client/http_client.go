@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"time"
 
@@ -56,7 +57,7 @@ func (c *HttpClient) sendRequest(req *http.Request, headers map[string]string, t
 
 	defer res.Body.Close()
 
-	if err = json.NewDecoder(res.Body).Decode(&resp); err != nil {
+	if err = json.NewDecoder(io.Reader(res.Body)).Decode(&resp); err != nil {
 		return &resp, err
 	}
 
@@ -100,6 +101,20 @@ func (c *HttpClient) PUT(path string, data interface{}, headers map[string]strin
 	return c.sendRequest(req, headers, timeout)
 }
 
+func (c *HttpClient) PATCH(path string, data interface{}, headers map[string]string, timeout time.Duration) (*response.HttpResponse, error) {
+	jsonData, err := json.Marshal(data)
+	if err != nil{
+		return nil, err
+	}
+
+	req, err := http.NewRequest(http.MethodPut, fmt.Sprintf("%s%s", c.BaseURL, path), bytes.NewReader(jsonData))
+	if err != nil {
+		return nil, err
+	}
+
+	return c.sendRequest(req, headers, timeout)
+}
+
 func (c *HttpClient) DELETE(path string, headers map[string]string, timeout time.Duration) (*response.HttpResponse, error) {
 	req, err := http.NewRequest(http.MethodDelete, fmt.Sprintf("%s%s", c.BaseURL, path), nil)
 	if err != nil {
@@ -108,4 +123,3 @@ func (c *HttpClient) DELETE(path string, headers map[string]string, timeout time
 
 	return c.sendRequest(req, headers, timeout)
 }
-
